@@ -1,0 +1,832 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MFASOFT — концепт главной v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* =================================================================
+   MFASOFT · концепт главной · v2 «Смягчение» · только десктоп
+   Все размеры в rem. Корень плавный: 1440 → 16px, 1920 → 18px.
+   Типографика: один шрифт, один вес (500), иерархия — размером.
+   ================================================================= */
+:root{
+  --paper:#FAFAFA; --white:#FFFFFF; --mist:#E3EAEA; --sage:#C4D2D1; --aqua:#B3D3D1;
+  --sand:#DCCDB4; --deep:#24494B; --deep-2:#1A3739; --teal:#0CA49F; --teal-t:#067A75;
+  --ink:#2C2C2C; --grey:#8A9091; --grey-2:#62696A; --line:#DDE3E3; --line-soft:#ECEFEF;
+  --pad:2.5rem; --col:calc((100vw - var(--pad)*2)/12);
+  --r:.5rem;
+  --ease:cubic-bezier(.25,.25,0,1);
+}
+html{font-size:calc(0.625rem + 0.4167vw)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:"Golos Text",system-ui,sans-serif;font-weight:500;font-size:1rem;line-height:1.25;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button,input,textarea{font:inherit;color:inherit;background:none;border:0}
+::selection{background:var(--aqua)}
+
+/* ---------- типографика: один вес, контраст размеров ---------- */
+.mega{font-size:7.5rem;line-height:.92;letter-spacing:-.04em;font-weight:400}
+.h1{font-size:5.5rem;line-height:.94;letter-spacing:-.035em;font-weight:400}
+.h2{font-size:3.75rem;line-height:1;letter-spacing:-.03em;font-weight:400}
+.h3{font-size:1.75rem;line-height:1.02;letter-spacing:-.02em}
+.h4{font-size:1.375rem;line-height:1.08;letter-spacing:-.01em}
+.num{font-size:5.5rem;line-height:.88;letter-spacing:-.04em;font-weight:400}
+.lead{font-size:1.375rem;line-height:1.12;letter-spacing:-.01em;color:var(--grey)}
+.txt{font-size:1.0625rem;line-height:1.2;color:var(--grey-2)}
+.sm{font-size:.8125rem;line-height:1.15;letter-spacing:-.005em}
+.g{color:var(--grey)}
+.slash::after{content:" /";color:var(--grey)}
+.wrap{padding-inline:var(--pad)}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);column-gap:1.25rem}
+.sec{padding-block:9rem;position:relative}
+.sec-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3rem;padding-bottom:1rem;border-bottom:1px solid var(--line)}
+.sec-top .sm.g{font-variant-numeric:tabular-nums}
+
+/* ---------- кнопки ---------- */
+.pill{display:inline-flex;align-items:center;gap:.75rem;height:3rem;padding:0 .375rem 0 1.375rem;border-radius:1.5rem;font-size:.9375rem;transition:background-color .25s var(--ease),color .25s var(--ease),box-shadow .25s var(--ease);cursor:pointer;white-space:nowrap}
+.pill .ic{width:2.25rem;height:2.25rem;border-radius:50%;display:grid;place-items:center;transition:transform .4s var(--ease),background-color .25s var(--ease)}
+.pill:hover .ic{transform:rotate(-45deg)}
+.pill.dark{background:var(--ink);color:#fff}.pill.dark .ic{background:#fff;color:var(--ink)}
+.pill.dark:hover{background:var(--deep)}
+.pill.light{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}.pill.light .ic{background:var(--mist)}
+.pill.light:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.pill.ghost{padding:0 1.375rem;box-shadow:inset 0 0 0 1px var(--line)}
+.pill.ghost:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.chip{display:inline-flex;align-items:center;gap:.375rem;height:2rem;padding:0 .875rem;border-radius:1rem;font-size:.8125rem;box-shadow:inset 0 0 0 1px var(--line);background:#fff;transition:all .25s var(--ease);cursor:pointer;white-space:nowrap}
+.chip:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.chip.on{background:var(--ink);color:#fff;box-shadow:none}
+.chip .p{color:var(--teal-t)}
+.circ{width:2.75rem;height:2.75rem;border-radius:50%;display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--line);background:#fff;transition:all .25s var(--ease);cursor:pointer;flex:none}
+.circ:hover{background:var(--ink);color:#fff;box-shadow:none}
+
+/* круглая CTA с пунктирным кольцом */
+.round{position:absolute;width:10rem;height:10rem;border-radius:50%;display:grid;place-items:center;text-align:center;font-size:.9375rem;line-height:1.1;cursor:pointer;z-index:5}
+.round .core{position:absolute;inset:.875rem;border-radius:50%;background:#fff;transition:transform .5s var(--ease),background-color .3s var(--ease)}
+.round span{position:relative;transition:color .3s var(--ease)}
+.round svg{position:absolute;inset:0;width:100%;height:100%;animation:spin 24s linear infinite}
+.round svg circle{fill:none;stroke:var(--grey);stroke-width:.6;stroke-dasharray:2 3}
+.round:hover .core{transform:scale(1.08);background:var(--ink)}
+.round:hover span{color:#fff}
+.round:hover svg{animation-duration:6s}
+.round.dark .core{background:var(--ink)}.round.dark span{color:#fff}
+.round.dark:hover .core{background:var(--teal)}.round.dark:hover span{color:var(--ink)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* стекло */
+.glass{background:rgba(255,255,255,.52);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);box-shadow:inset 0 0 0 1px rgba(255,255,255,.75);border-radius:var(--r)}
+.glass.dk{background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+
+/* ссылка с точкой */
+.dl{position:relative;transition:color .25s var(--ease)}
+.dl::after{content:"";position:absolute;left:50%;bottom:-.625rem;width:.3125rem;height:.3125rem;border-radius:50%;background:var(--ink);transform:translate(-50%,.25rem) scale(0);transition:transform .3s var(--ease)}
+.dl:hover::after,.dl.on::after{transform:translate(-50%,0) scale(1)}
+
+/* ---------- шапка ---------- */
+.hdr{position:fixed;inset:0 0 auto;z-index:40;height:4.5rem;display:grid;grid-template-columns:repeat(12,1fr);column-gap:1.25rem;align-items:center;padding-inline:var(--pad);transition:background-color .4s var(--ease),box-shadow .4s var(--ease)}
+.hdr.scrolled{background:rgba(250,250,250,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
+.logo{grid-column:1/span 2;display:flex;align-items:center;gap:.625rem;font-size:1.125rem;letter-spacing:-.01em}
+.logo svg{width:1.75rem;height:1.75rem}
+.hdr nav{grid-column:4/span 5;display:flex;gap:2rem;font-size:.875rem}
+.hdr .right{grid-column:9/span 4;display:flex;justify-content:flex-end;align-items:center;gap:.5rem}
+.hdr .phone{font-size:.875rem;margin-right:1rem}
+.burger{width:3rem;height:3rem;border-radius:50%;background:var(--ink);display:grid;place-items:center;cursor:pointer;transition:transform .4s var(--ease)}
+.burger:hover{transform:rotate(90deg)}
+.burger i{display:block;width:1rem;height:1px;background:#fff;box-shadow:0 -.25rem 0 #fff,0 .25rem 0 #fff}
+
+/* ---------- меню-оверлей ---------- */
+.menu{position:fixed;inset:0;z-index:60;pointer-events:none}
+.menu .veil{position:absolute;inset:0;background:rgba(36,73,75,.18);backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0);opacity:0;transition:opacity .6s var(--ease),backdrop-filter .6s var(--ease)}
+.menu .bignum{position:absolute;left:var(--pad);bottom:1.5rem;font-size:20rem;line-height:.8;letter-spacing:-.06em;color:#fff;opacity:0;transition:opacity .6s var(--ease)}
+.menu .bigcap{position:absolute;left:calc(var(--pad) + .5rem);bottom:20rem;color:#fff;opacity:0;transition:opacity .6s var(--ease)}
+.menu .panel{position:absolute;top:.75rem;right:.75rem;bottom:.75rem;width:34rem;background:#fff;border-radius:var(--r);padding:1.25rem 2rem 2rem;display:flex;flex-direction:column;transform:translateX(105%);transition:transform .9s var(--ease)}
+.menu.open{pointer-events:auto}
+.menu.open .veil{opacity:1;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.menu.open .bignum,.menu.open .bigcap{opacity:1}
+.menu.open .panel{transform:none}
+.menu .ph{display:flex;justify-content:space-between;align-items:center;margin-bottom:3rem}
+.menu ol{list-style:none}
+.menu li a{display:flex;align-items:baseline;gap:1rem;padding:.55rem 0;font-size:2.75rem;letter-spacing:-.035em;line-height:1;transition:color .25s var(--ease),padding .4s var(--ease)}
+.menu li a small{font-size:.8125rem;color:var(--grey);letter-spacing:0;width:1.5rem}
+.menu li a:hover{padding-left:.75rem;color:var(--teal-t)}
+.menu .foot{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:1rem;padding-top:1.5rem;border-top:1px solid var(--line)}
+
+/* ---------- 01 хиро ---------- */
+.hero{padding-top:8rem}
+.hero .meta{display:flex;justify-content:space-between;margin-bottom:2rem}
+.hero .mega{max-width:88rem}
+.stage{position:relative;margin-top:3rem;height:40rem;border-radius:var(--r);overflow:hidden;isolation:isolate;background:#fff}
+.stripes{position:absolute;inset:-2rem;z-index:-1;filter:blur(1.75rem);opacity:.7;
+  background:
+   linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 45%,#fff 92%),
+   linear-gradient(90deg,
+    #fff 0 4%,#DDEDEC 4% 9%,#9FD0CD 9% 12%,#EAF4F3 12% 18%,#7CC3BF 18% 20%,#fff 20% 27%,
+    #CFE6E4 27% 33%,#5DB6B1 33% 35%,#F2F8F8 35% 44%,#B3D3D1 44% 50%,#fff 50% 56%,
+    #8CCAC6 56% 59%,#E6F2F1 59% 66%,#4FAEA9 66% 68%,#D6EAE9 68% 75%,#fff 75% 81%,
+    #A6D4D1 81% 86%,#EEF6F6 86% 92%,#6EBEBA 92% 94%,#fff 94% 100%);
+  animation:drift 18s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translateX(-1.5rem) scaleX(1.03)}}
+.stage .art{position:absolute;left:50%;bottom:-2rem;height:112%;aspect-ratio:16/9;transform:translateX(-50%)}
+.stage .art img{width:100%;height:100%;object-fit:contain;-webkit-mask-image:radial-gradient(ellipse 60% 70% at 50% 55%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 60% 70% at 50% 55%,#000 60%,transparent 100%)}
+.stage .lede{position:absolute;left:1.5rem;bottom:1.5rem;width:27rem;padding:1.5rem;display:flex;flex-direction:column;gap:1.5rem}
+.stage .lede .lead{color:var(--ink)}
+.stage .lede .row{display:flex;gap:.5rem}
+.widgets{position:absolute;right:1.5rem;top:1.5rem;bottom:1.5rem;width:19rem;display:flex;flex-direction:column;gap:.5rem}
+.wg{padding:1rem 1.125rem}
+.wg .top{display:flex;justify-content:space-between;margin-bottom:.875rem}
+.wg .st{display:flex;align-items:center;gap:.5rem;font-size:1.125rem}
+.wg .st i{width:.5rem;height:.5rem;border-radius:50%;background:var(--teal);box-shadow:0 0 0 .25rem rgba(12,164,159,.18);animation:pulse 2.4s var(--ease) infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 .5rem rgba(12,164,159,0)}}
+.wg .otp{font-size:2.75rem;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
+.bar{height:.25rem;border-radius:1rem;background:rgba(44,44,44,.1);margin-top:.875rem;overflow:hidden}
+.bar i{display:block;height:100%;width:62%;background:var(--ink);border-radius:1rem;animation:tick 30s linear infinite}
+@keyframes tick{from{width:100%}to{width:0}}
+.wg .chips{display:flex;flex-wrap:wrap;gap:.25rem}
+.wg .chips span{font-size:.75rem;padding:.3rem .55rem;border-radius:1rem;background:rgba(255,255,255,.7)}
+.stage .tag{position:absolute;font-size:.75rem;padding:.3rem .6rem;border-radius:1rem;white-space:nowrap}
+.hero .round{right:23rem;bottom:-5rem}
+.trust{display:grid;grid-template-columns:repeat(4,1fr);column-gap:1.25rem;margin-top:6.5rem}
+.trust div{border-top:1px solid var(--ink);padding-top:1rem;display:flex;flex-direction:column;gap:.375rem}
+.trust b{font-weight:400;font-size:2.25rem;letter-spacing:-.03em;line-height:1}
+
+/* ---------- 02 проблема ---------- */
+.statement{font-size:4.5rem;line-height:1;letter-spacing:-.035em;max-width:84rem;font-weight:400}
+.statement em{font-style:normal;color:var(--grey)}
+.triad{display:grid;grid-template-columns:repeat(3,1fr);column-gap:1.25rem;margin-top:6rem}
+.triad .it{display:grid;grid-template-columns:7rem 1fr;gap:1.5rem;align-items:start}
+.triad .it svg{width:7rem;height:7rem}
+.triad .it .h4{margin:.5rem 0 .75rem}
+.ill circle,.ill path,.ill line,.ill ellipse{fill:none;stroke-width:1;vector-effect:non-scaling-stroke}
+.ill .o{stroke:var(--sage)}.ill .s{stroke:var(--sand)}.ill .k{stroke:var(--ink)}.ill .t{stroke:var(--teal)}
+.ill .f{fill:var(--aqua);stroke:none}.ill .fk{fill:var(--ink);stroke:none}.ill .fs{fill:var(--sand);stroke:none}.ill .ft{fill:var(--teal);stroke:none}
+.drift{animation:dr 7s ease-in-out infinite alternate}
+.drift.b{animation-duration:9s;animation-delay:-3s}.drift.c{animation-duration:11s;animation-delay:-5s}
+@keyframes dr{to{transform:translate(4px,-5px)}}
+.draw path,.draw line,.draw circle.dw{stroke-dasharray:1.02;stroke-dashoffset:1.02;transition:stroke-dashoffset 2.2s var(--ease)}
+.in .draw path,.in .draw line,.in .draw circle.dw,.draw.in path,.draw.in line,.draw.in circle.dw{stroke-dashoffset:0}
+
+/* ---------- 03 как работает: бенто ---------- */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:22rem 22rem auto;gap:.5rem}
+.tile{position:relative;border-radius:var(--r);overflow:hidden;background:#fff;padding:1.5rem;display:flex;flex-direction:column;isolation:isolate;transition:transform .6s var(--ease)}
+.tile .cap{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:2}
+.tile.flow{grid-column:1/span 7;grid-row:1/span 2}
+.tile.otp{grid-column:8/span 5;padding:0}
+.tile.otp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 45%;transition:transform 1.2s var(--ease)}
+.tile.otp:hover img{transform:scale(1.05)}
+.tile.otp .glass{position:absolute;left:1rem;bottom:1rem;right:1rem;padding:1rem 1.125rem}
+.tile.push{grid-column:8/span 3;background:var(--aqua)}
+.tile.pin{grid-column:11/span 2;background:var(--deep);color:#fff}
+.tile.pin .g{color:#9DB9B8}
+.tile.chan{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem}
+.flowsvg{position:absolute;left:0;right:0;top:32%;height:9rem;width:100%}
+.flowsvg path{fill:none;stroke:var(--line);stroke-width:1}
+.flowsvg .run{stroke:var(--teal);stroke-width:1.5;stroke-dasharray:80 1200;animation:run 5s var(--ease) infinite}
+@keyframes run{from{stroke-dashoffset:80}to{stroke-dashoffset:-1200}}
+.steps{position:absolute;left:1.5rem;right:1.5rem;bottom:1.5rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem}
+.steps .s{border-top:1px solid var(--line);padding-top:.875rem}
+.steps .s .h4{margin-top:.5rem}
+.steps .s.on{border-color:var(--teal)}
+.node{position:absolute;width:3.25rem;height:3.25rem;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px var(--line);display:grid;place-items:center;font-size:.75rem;transform:translate(-50%,-50%)}
+.node.k{background:var(--ink);color:#fff;box-shadow:none}
+.node.t{background:var(--teal);color:var(--ink);box-shadow:0 0 0 .5rem rgba(12,164,159,.12),0 0 2rem rgba(12,164,159,.45)}
+.node.d::before{content:"";position:absolute;inset:-.5rem;border-radius:50%;border:1px dashed var(--grey);animation:spin 20s linear infinite}
+.mob{position:absolute;left:50%;bottom:-6rem;transform:translateX(-50%);width:11rem;height:20rem;background:var(--ink);border-radius:1.75rem;padding:.4rem;transition:transform .8s var(--ease)}
+.tile.push:hover .mob{transform:translate(-50%,-1rem)}
+.mob .scr{background:#fff;border-radius:1.4rem;height:100%;padding:2.25rem .75rem .75rem}
+.mob .nt{border-radius:.75rem;background:var(--paper);padding:.625rem;font-size:.6875rem;line-height:1.2}
+.mob .nt .bt{display:grid;grid-template-columns:1fr 1fr;gap:.25rem;margin-top:.5rem}
+.mob .nt .bt span{height:1.5rem;border-radius:.75rem;display:grid;place-items:center;background:#fff;font-size:.625rem}
+.mob .nt .bt span.ok{background:var(--teal)}
+
+/* ---------- 04 мультиарендность: орбиты ---------- */
+.tenancy{background:var(--mist)}
+.ten{display:grid;grid-template-columns:repeat(12,1fr);column-gap:1.25rem;align-items:start}
+.ten .txt-col{grid-column:1/span 4}
+.ten .h2{margin-bottom:2.5rem}
+.olist{list-style:none;counter-reset:n}
+.olist li{counter-increment:n;display:grid;grid-template-columns:2.5rem 1fr;padding:1rem 0;border-top:1px solid rgba(44,44,44,.12);font-size:1.0625rem;line-height:1.2;color:var(--grey-2)}
+.olist li::before{content:counter(n,decimal-leading-zero);font-size:.8125rem;color:var(--grey);padding-top:.15rem}
+.olist li b{font-weight:500;color:var(--ink)}
+.orbit{grid-column:5/span 8;position:relative;height:46rem}
+.orbit svg.orb{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.orbit .orb ellipse{fill:none;stroke:rgba(44,44,44,.16);stroke-width:1}
+.orbit .orb ellipse.dash{stroke-dasharray:3 5}
+.orbit .orb .glow{fill:url(#g1)}
+.orbit .core{position:absolute;left:50%;top:53%;width:58%;transform:translate(-50%,-50%)}
+.orbit .core img{width:100%;-webkit-mask-image:radial-gradient(ellipse 55% 60% at 50% 50%,#000 55%,transparent 100%);mask-image:radial-gradient(ellipse 55% 60% at 50% 50%,#000 55%,transparent 100%)}
+.orbit .count{position:absolute;display:flex;flex-direction:column;gap:.25rem}
+.orbit .count b{font-weight:400;font-size:4rem;letter-spacing:-.05em;line-height:.85}
+.orb text{font-family:"Golos Text";font-size:12px;fill:var(--ink)}
+.orb .lbl rect{fill:#fff}
+.benefits{display:grid;grid-template-columns:repeat(4,1fr);column-gap:1.25rem;margin-top:5rem}
+.benefits div{border-top:1px solid var(--ink);padding-top:1rem}
+.benefits .sm{display:block;margin-bottom:2.5rem}
+
+/* ---------- 05 где нужен: карточки-продукты ---------- */
+.uses{display:grid;grid-template-columns:1fr 1fr;gap:3rem 1.25rem}
+.card{position:relative;background:#fff;border-radius:var(--r);box-shadow:inset 0 0 0 1px var(--line);display:grid;grid-template-columns:15rem 1fr;min-height:19rem;transition:box-shadow .3s var(--ease)}
+.card:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.card .pic{border-right:1px solid var(--line);display:grid;place-items:center}
+.card .pic svg{width:9.5rem;height:9.5rem;transition:transform 1s var(--ease)}
+.card:hover .pic svg{transform:rotate(-12deg) scale(1.04)}
+.card .body{display:flex;flex-direction:column}
+.card .body .h3{padding:1.5rem 1.5rem 0;flex:1}
+.card table{width:100%;border-collapse:collapse;font-size:.9375rem}
+.card td{padding:.875rem 1.5rem;border-top:1px solid var(--line);vertical-align:top;line-height:1.2}
+.card td:first-child{width:7.5rem;color:var(--grey);font-size:.8125rem;border-right:1px solid var(--line);padding-top:1rem}
+.card .plus{position:absolute;right:1.5rem;bottom:-1.75rem;width:3.5rem;height:3.5rem;border-radius:50%;background:var(--mist);display:grid;place-items:center;font-size:1.25rem;transition:all .35s var(--ease);z-index:2}
+.card .plus::before{content:"";position:absolute;inset:-.375rem;border-radius:50%;border:1px dashed var(--grey);opacity:.6}
+.card:hover .plus{background:var(--ink);color:#fff;transform:rotate(90deg)}
+
+/* ---------- 06 интеграции: дуга ---------- */
+.integr{overflow:hidden}
+.arc{position:relative;height:36rem;margin-top:1rem;overflow:hidden}
+.arc svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.arc .mer{fill:none;stroke:rgba(44,44,44,.14);stroke-width:1}
+.arc .rim{fill:none;stroke:rgba(44,44,44,.22);stroke-width:1}
+.arc .halo{position:absolute;left:50%;bottom:-14rem;width:56rem;height:28rem;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(12,164,159,.32),rgba(179,211,209,.22) 55%,transparent);filter:blur(1rem);transition:opacity .6s var(--ease)}
+.arc .cat{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:.625rem;cursor:pointer}
+.arc .cat .dot{width:4.5rem;height:4.5rem;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px var(--line),0 .5rem 1.5rem rgba(36,73,75,.06);display:grid;place-items:center;font-size:.9375rem;transition:all .35s var(--ease)}
+.arc .cat:hover .dot,.arc .cat.on .dot{background:var(--ink);color:#fff;transform:scale(1.1)}
+.arc .sas{position:absolute;left:50%;bottom:2.5rem;transform:translateX(-50%);width:7rem;height:7rem;border-radius:50%;background:var(--deep);color:#fff;display:grid;place-items:center;font-size:1.125rem;box-shadow:0 0 0 .75rem rgba(12,164,159,.12),0 0 4rem rgba(12,164,159,.55)}
+.arc .caption{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:30rem;text-align:center;padding:1rem 1.25rem}
+.arc .caption .h4{margin-bottom:.375rem;transition:opacity .3s}
+.arc .caption .txt{transition:opacity .3s}
+.cert-note{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line)}
+
+/* ---------- 07 сертификаты: круги ---------- */
+.certs{display:grid;grid-template-columns:repeat(12,1fr);column-gap:1.25rem}
+.certs .head{grid-column:1/span 5}
+.venn{grid-column:6/span 7;position:relative}
+.venn svg{width:100%;height:auto;display:block;overflow:visible}
+.venn text{font-family:"Golos Text";font-weight:500;fill:var(--ink)}
+.venn .cols{display:grid;grid-template-columns:repeat(3,1fr);column-gap:1.25rem;margin-top:-.5rem}
+.venn .cols div{padding-top:1rem}
+.venn .cols .h4{margin-bottom:.5rem}
+
+/* ---------- 08 кейсы: тёмная секция ---------- */
+.cases{background:var(--deep-2);color:#fff;overflow:hidden;padding-bottom:0}
+.cases .sec-top{border-color:rgba(255,255,255,.12)}
+.cases .g,.cases .txt{color:#8FAEAD}
+.kulisa{position:absolute;left:0;right:0;bottom:0;height:34rem;pointer-events:none;
+  background:repeating-linear-gradient(90deg,rgba(12,164,159,0) 0 .6rem,rgba(80,220,210,.55) .6rem .7rem,rgba(12,164,159,0) .7rem 1.4rem);
+  -webkit-mask-image:radial-gradient(ellipse 70% 100% at 50% 100%,#000 0%,rgba(0,0,0,.6) 35%,transparent 70%);mask-image:radial-gradient(ellipse 70% 100% at 50% 100%,#000 0%,rgba(0,0,0,.6) 35%,transparent 70%);filter:blur(.5px);opacity:.75}
+.kulisa::after{content:"";position:absolute;inset:auto 0 0;height:60%;background:radial-gradient(ellipse 50% 80% at 50% 100%,rgba(12,164,159,.55),transparent 70%)}
+.cases .head{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;margin-bottom:3.5rem}
+.cases .head .h2{max-width:60rem}
+.cases .ctl{display:flex;gap:.5rem;align-items:center}
+.cases .ctl .circ{background:transparent;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+.cases .ctl .circ:hover{background:#fff;color:var(--ink)}
+.track{display:flex;gap:.75rem;padding-inline:var(--pad);cursor:grab;user-select:none;will-change:transform;transition:transform 1s var(--ease)}
+.track.drag{cursor:grabbing;transition:none}
+.case{flex:none;width:30rem;min-height:31rem;padding:1.75rem;display:flex;flex-direction:column;transition:background-color .4s var(--ease),transform .6s var(--ease)}
+.case:hover{background:rgba(255,255,255,.1)}
+.case .who{display:flex;justify-content:space-between;color:#B9CFCE}
+.case .num{margin-top:auto;font-size:6.5rem}
+.case .num sup{font-size:.35em;vertical-align:top;letter-spacing:0;margin-left:.15em}
+.case .cap{margin-top:.875rem;font-size:1.125rem;line-height:1.15;color:#D7E5E4}
+.case ul{list-style:none;margin-top:1.5rem}
+.case li{font-size:.875rem;color:#9DB9B8;padding:.5rem 0;border-top:1px solid rgba(255,255,255,.1)}
+.waves{position:relative;height:13rem;margin-top:2rem}
+.waves svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.waves path{fill:none;stroke-width:1.2}
+.waves .w1{stroke:rgba(12,164,159,.9)}.waves .w2{stroke:rgba(220,205,180,.75)}.waves .w3{stroke:rgba(179,211,209,.45)}
+.waves .pos{position:absolute;top:50%;transform:translate(-50%,-50%);width:1rem;height:1rem;border-radius:50%;background:#fff;transition:left 1s var(--ease)}
+.waves .pos::before{content:"";position:absolute;inset:-1.25rem;border-radius:50%;border:1px dashed rgba(255,255,255,.5);animation:spin 18s linear infinite}
+.waves .pos span{position:absolute;left:50%;top:-3rem;transform:translateX(-50%);font-size:.75rem;color:#B9CFCE;white-space:nowrap}
+
+/* ---------- 09 развёртывание: сплит внутри блока ---------- */
+.split{display:grid;grid-template-columns:5fr 7fr;border-radius:var(--r);overflow:hidden;background:#fff;box-shadow:inset 0 0 0 1px var(--line);min-height:44rem}
+.split .l{padding:2rem;display:flex;flex-direction:column}
+.split .l .h2{margin:1rem 0 2.5rem}
+.tabs{list-style:none;border-top:1px solid var(--line)}
+.tabs li{display:grid;grid-template-columns:2.5rem 1fr auto;align-items:center;padding:1.125rem 0;border-bottom:1px solid var(--line);font-size:1.5rem;letter-spacing:-.02em;color:var(--grey);cursor:pointer;transition:color .3s var(--ease),padding .4s var(--ease)}
+.tabs li small{font-size:.8125rem;letter-spacing:0}
+.tabs li .ar{opacity:0;transition:opacity .3s,transform .4s var(--ease);transform:translateX(-.5rem)}
+.tabs li:hover{color:var(--ink)}
+.tabs li.on{color:var(--ink);padding-left:.5rem}
+.tabs li.on .ar{opacity:1;transform:none}
+.zones{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;padding-top:2rem}
+.zones .sm.g{display:block;margin-bottom:.625rem}
+.zones ul{list-style:none;font-size:1rem;line-height:1.3}
+.zones .val{font-size:1.375rem;line-height:1.1;letter-spacing:-.015em}
+.for{grid-column:1/-1;border-top:1px solid var(--line);padding-top:1rem}
+.for .sm.g{display:block;margin-bottom:.625rem}
+.for .row{display:flex;gap:.375rem;flex-wrap:wrap}
+.split .r{position:relative;overflow:hidden;background:var(--mist)}
+.split .r img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity 1s var(--ease),transform 1.6s var(--ease)}
+.split .r img.on{opacity:1;transform:none}
+.split .r .glass{position:absolute;padding:1rem 1.125rem}
+.split .r .gA{left:1.5rem;top:1.5rem;width:15rem}
+.split .r .gB{right:1.5rem;bottom:1.5rem;width:18rem}
+.lic{display:grid;grid-template-columns:repeat(4,1fr);column-gap:1.25rem;margin-top:2.5rem}
+.lic>div{border-top:1px solid var(--ink);padding-top:1rem}
+.lic .h4{margin:.375rem 0 .375rem}
+
+/* ---------- 10 FAQ + форма ---------- */
+.faq{display:grid;grid-template-columns:repeat(12,1fr);column-gap:1.25rem}
+.faq .head{grid-column:1/span 4}
+.faq .list{grid-column:6/span 7}
+details{border-top:1px solid var(--line)}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:2.5rem 1fr 2.75rem;gap:1rem;align-items:center;padding:1.25rem 0;font-size:1.5rem;letter-spacing:-.02em;line-height:1.1;transition:color .25s var(--ease)}
+summary::-webkit-details-marker{display:none}
+summary .sm{color:var(--grey)}
+summary:hover{color:var(--teal-t)}
+summary .circ::after{content:"+";font-size:1.125rem}
+details[open] summary .circ{background:var(--ink);color:#fff;box-shadow:none}
+details[open] summary .circ::after{content:"−"}
+details p{padding:0 3.75rem 1.75rem 3.5rem;max-width:44rem}
+.form{background:var(--sage);border-radius:var(--r);margin-inline:var(--pad);padding:4rem 3rem 5rem;position:relative;display:grid;grid-template-columns:repeat(12,1fr);column-gap:1.25rem;overflow:visible}
+.form .l{grid-column:1/span 6}
+.form .l .h1{margin:1.25rem 0 1.5rem;font-size:5rem}
+.form .l .lead{color:var(--grey-2);max-width:30rem}
+.form form{grid-column:8/span 5;display:grid;grid-template-columns:1fr 1fr;gap:0 1.25rem;align-content:start;padding-top:2.5rem}
+.field{display:flex;flex-direction:column;border-bottom:1px solid rgba(44,44,44,.35);padding:1.125rem 0 .5rem;transition:border-color .25s}
+.field:focus-within{border-color:var(--ink)}
+.field.w{grid-column:1/-1}
+.field label{font-size:.8125rem;color:var(--grey-2)}
+.field input,.field textarea{outline:0;font-size:1.25rem;padding:.375rem 0;resize:none;letter-spacing:-.01em}
+.field input::placeholder,.field textarea::placeholder{color:rgba(44,44,44,.35)}
+.consent{grid-column:1/-1;display:flex;gap:.625rem;margin-top:1.25rem;font-size:.8125rem;line-height:1.25;color:var(--grey-2);max-width:26rem}
+.consent i{flex:none;width:1rem;height:1rem;border-radius:50%;background:var(--ink);margin-top:.05rem}
+.form .round{right:6rem;bottom:-5rem}
+
+/* ---------- футер ---------- */
+.ftr{padding-top:12rem}
+.ftr .cols{display:grid;grid-template-columns:repeat(12,1fr);column-gap:1.25rem}
+.ftr .c{grid-column:span 2;display:flex;flex-direction:column;gap:.5rem;font-size:.9375rem}
+.ftr .c .sm{margin-bottom:.75rem}
+.ftr .c a{width:max-content}
+.ftr .c.first{grid-column:1/span 4}
+.wordmark{font-weight:400;font-size:22vw;line-height:.78;letter-spacing:-.065em;margin:5rem 0 0 -.06em;white-space:nowrap;color:var(--ink)}
+.ftr .bottom{display:flex;justify-content:space-between;padding:1.25rem 0 1.5rem;border-top:1px solid var(--line);margin-top:1.5rem}
+
+/* ---------- появление ---------- */
+.rv{opacity:0;transform:translateY(2.5rem);transition:opacity 1s var(--ease),transform 1.2s var(--ease)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+
+/* ---------- слоты под 3D ---------- */
+.slot-toggle{position:fixed;left:1.25rem;bottom:1.25rem;z-index:50;height:2.5rem;padding:0 1rem;border-radius:1.25rem;background:#fff;box-shadow:inset 0 0 0 1px var(--line);font-size:.8125rem;cursor:pointer;display:flex;align-items:center;gap:.5rem}
+.slot-toggle i{width:.5rem;height:.5rem;border-radius:50%;box-shadow:inset 0 0 0 1px var(--ink)}
+.show-slots .slot-toggle i{background:#E5484D;box-shadow:none}
+[data-slot]{position:relative}
+.show-slots [data-slot]::after{content:attr(data-slot);position:absolute;inset:0;z-index:30;pointer-events:none;outline:2px dashed #E5484D;outline-offset:-2px;background:rgba(229,72,77,.06);padding:.75rem;white-space:pre;font-size:.75rem;line-height:1.4;color:#B4232A}
+</style>
+</head>
+<body>
+
+<!-- ================= ШАПКА ================= -->
+<header class="hdr" id="hdr">
+  <a class="logo" href="#">
+    <svg viewBox="0 0 28 28" aria-hidden="true"><path d="M14 2 26 14 14 26 2 14Z" fill="none" stroke="#2C2C2C" stroke-width="1.4"/><path d="M14 9 19 14 14 19 9 14Z" fill="#0CA49F"/></svg>
+    MFASOFT
+  </a>
+  <nav>
+    <a class="dl on" href="#">Продукт</a>
+    <a class="dl" href="#">Лицензирование</a>
+    <a class="dl" href="#">Облако</a>
+    <a class="dl" href="#">Партнёры</a>
+    <a class="dl" href="#">Компания</a>
+  </nav>
+  <div class="right">
+    <a class="phone dl" href="tel:+74952280208">+7 495 228-02-08</a>
+    <a class="pill light" href="#form">Связаться<span class="ic">→</span></a>
+    <button class="burger" id="menuBtn" aria-label="Меню"><i></i></button>
+  </div>
+</header>
+
+<!-- ================= МЕНЮ ================= -->
+<div class="menu" id="menu" aria-hidden="true">
+  <div class="veil" data-close></div>
+  <div class="bigcap sm">Раздел /</div>
+  <div class="bignum" id="bignum">01</div>
+  <aside class="panel">
+    <div class="ph"><span class="sm g">Меню /</span><button class="circ" data-close aria-label="Закрыть">✕</button></div>
+    <ol id="menuList">
+      <li><a href="#" data-n="01"><small>01</small>Продукт</a></li>
+      <li><a href="#" data-n="02"><small>02</small>Лицензирование</a></li>
+      <li><a href="#" data-n="03"><small>03</small>Сертифицированная версия</a></li>
+      <li><a href="#" data-n="04"><small>04</small>Облако</a></li>
+      <li><a href="#" data-n="05"><small>05</small>Партнёры</a></li>
+      <li><a href="#" data-n="06"><small>06</small>Медиа</a></li>
+      <li><a href="#" data-n="07"><small>07</small>Компания</a></li>
+      <li><a href="#" data-n="08"><small>08</small>Поддержка</a></li>
+    </ol>
+    <div class="foot">
+      <div><div class="sm g">Телефон /</div><div class="h4" style="margin-top:.375rem">+7 495 228-02-08</div></div>
+      <div><div class="sm g">Почта /</div><div class="h4" style="margin-top:.375rem">info@mfasoft.ru</div></div>
+    </div>
+  </aside>
+</div>
+
+<main>
+<!-- ================= 01 ХИРО ================= -->
+<section class="hero wrap">
+  <div class="meta sm"><span class="slash">Secure Authentication Server</span><span class="g">Версия 1.17 · ноябрь 2026</span></div>
+  <h1 class="mega rv">Один сервер — сколько угодно независимых организаций</h1>
+
+  <div class="stage rv d1" data-slot="SLOT 01 · HERO · MFA_Gateway / G_Hero
+2.6:1 · прозрачный фон поверх градиент-полос · ≥ 3840×1480
+место под стеклянные виджеты справа и лид слева">
+    <div class="stripes"></div>
+    <div class="art"><img src="img/hero-gateway.png" alt="Керамический шлюз в форме ромба: запросы входят графитовыми брусками и выходят бирюзовыми"></div>
+    <span class="tag glass" style="left:26%;top:29%">VPN</span>
+    <span class="tag glass" style="left:30%;top:44%">RDP · VDI</span>
+    <span class="tag glass" style="left:12%;top:47%">Web</span>
+
+    <div class="lede glass">
+      <p class="lead">Многофакторная аутентификация с&nbsp;многоуровневой мультиарендностью. В&nbsp;своей инфраструктуре или&nbsp;как сервис из&nbsp;облака.</p>
+      <div class="row">
+        <a class="pill dark" href="#form">Назначить встречу<span class="ic">→</span></a>
+        <a class="pill ghost" href="#" style="background:rgba(255,255,255,.6)">Брошюра ↓</a>
+      </div>
+    </div>
+
+    <div class="widgets">
+      <div class="wg glass">
+        <div class="top sm"><span class="slash">Запрос на вход</span><span class="g">00:12</span></div>
+        <div class="st"><i></i>Подтверждено</div>
+        <div class="sm g" style="margin-top:.5rem">VPN · i.petrov · пуш с биометрией</div>
+      </div>
+      <div class="wg glass">
+        <div class="top sm"><span class="slash">Одноразовый пароль</span><span class="g">TOTP</span></div>
+        <div class="otp">482 913</div>
+        <div class="bar"><i></i></div>
+      </div>
+      <div class="wg glass" style="margin-top:auto">
+        <div class="top sm"><span class="slash">Тенанты</span><span class="g">1 инсталляция</span></div>
+        <div class="chips"><span>Головной офис</span><span>Филиал</span><span>Подрядчик</span><span>Клиент провайдера</span><span>+</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:relative">
+    <a class="round" href="#form"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="49"/></svg><span class="core"></span><span>Пилот<br>за 2 дня</span></a>
+  </div>
+
+  <div class="trust">
+    <div class="rv"><span class="sm g">ФСТЭК России /</span><b>4 уровень доверия</b></div>
+    <div class="rv d1"><span class="sm g">Минцифры /</span><b>Реестр ПО</b></div>
+    <div class="rv d2"><span class="sm g">Роспатент /</span><b>Программа для ЭВМ</b></div>
+    <div class="rv d3"><span class="sm g">Пользователей /</span><b>100 000+</b></div>
+  </div>
+</section>
+
+<!-- ================= 02 ПРОБЛЕМА ================= -->
+<section class="sec wrap">
+  <div class="sec-top sm"><span class="slash">Постоянные пароли</span><span class="g">02 — 10</span></div>
+  <p class="statement rv">Даже сложный пароль не&nbsp;защищает учётную запись, <em>если его украли, перехватили или получили от&nbsp;самого пользователя.</em></p>
+  <div class="triad">
+    <div class="it rv">
+      <svg class="ill draw" viewBox="0 0 112 112"><circle pathLength="1" class="o dw" cx="56" cy="56" r="54"/><path pathLength="1" class="k" d="M30 62h52"/><circle class="fk drift" cx="38" cy="50" r="3"/><circle class="fk drift b" cx="52" cy="50" r="3"/><circle class="fk drift c" cx="66" cy="50" r="3"/><circle class="fs drift" cx="80" cy="50" r="3"/><path pathLength="1" class="s" d="M44 76c8-6 16-6 24 0"/></svg>
+      <div><span class="sm g">01 — Проблема</span><h3 class="h4">Пароля уже недостаточно</h3><p class="txt">Постоянный пароль не&nbsp;гарантирует, что в&nbsp;систему входит владелец учётной записи.</p></div>
+    </div>
+    <div class="it rv d1">
+      <svg class="ill draw" viewBox="0 0 112 112"><circle pathLength="1" class="s dw" cx="56" cy="56" r="54"/><path pathLength="1" class="k" d="M34 40l14 14M78 40 64 54M34 76l14-14M78 76 64 62"/><circle class="f drift" cx="56" cy="58" r="9"/><circle class="fk drift b" cx="34" cy="40" r="3"/><circle class="fk drift c" cx="78" cy="40" r="3"/><circle class="fs drift" cx="34" cy="76" r="3"/><circle class="fk drift b" cx="78" cy="76" r="3"/></svg>
+      <div><span class="sm g">02 — Причины</span><h3 class="h4">Пользователи срезают углы</h3><p class="txt">Один пароль для разных сервисов, простые комбинации, пароли в&nbsp;браузере и&nbsp;заметках, передача коллегам.</p></div>
+    </div>
+    <div class="it rv d2">
+      <svg class="ill draw" viewBox="0 0 112 112"><circle pathLength="1" class="o dw" cx="56" cy="56" r="54"/><circle class="k" cx="44" cy="56" r="18"/><circle class="t" cx="68" cy="56" r="18"/><circle class="ft drift" cx="56" cy="56" r="4"/></svg>
+      <div><span class="sm g" style="color:var(--teal-t)">03 — Решение</span><h3 class="h4">Второй фактор</h3><p class="txt">MFA добавляет к&nbsp;паролю ещё одно подтверждение личности — учётная запись защищена, даже если пароль известен злоумышленнику.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 КАК РАБОТАЕТ · БЕНТО ================= -->
+<section class="sec wrap" style="padding-top:0">
+  <div class="sec-top sm"><span class="slash">Как это работает</span><span class="g">03 — 10</span></div>
+  <h2 class="h2 rv" style="max-width:54rem;margin-bottom:3rem">Пароль, затем подтверждение. Без второго шага доступа нет</h2>
+  <div class="bento">
+    <div class="tile flow rv">
+      <div class="cap"><span class="sm slash">Сценарий входа</span><span class="sm g">≈ 3 секунды</span></div>
+      <svg class="flowsvg" viewBox="0 0 1000 140" preserveAspectRatio="none">
+        <path d="M0 70 C120 70 140 40 230 40 S380 100 470 100 S620 40 720 40 S880 70 1000 70"/>
+        <path class="run" d="M0 70 C120 70 140 40 230 40 S380 100 470 100 S620 40 720 40 S880 70 1000 70"/>
+      </svg>
+      <span class="node" style="left:12%;top:41%">01</span>
+      <span class="node k" style="left:37%;top:51%">02</span>
+      <span class="node d" style="left:62%;top:38%">03</span>
+      <span class="node t" style="left:86%;top:47%">✓</span>
+      <div class="steps">
+        <div class="s"><span class="sm g">Логин</span><p class="h4">Сотрудник вводит логин и&nbsp;пароль в&nbsp;VPN, RDP или&nbsp;веб</p></div>
+        <div class="s"><span class="sm g">Запрос</span><p class="h4">SAS запрашивает второй фактор по&nbsp;политике тенанта</p></div>
+        <div class="s"><span class="sm g">Подтверждение</span><p class="h4">Пуш в&nbsp;приложении или одноразовый пароль</p></div>
+        <div class="s on"><span class="sm" style="color:var(--teal-t)">Доступ</span><p class="h4">Вход открыт, событие записано в&nbsp;журнал аудита</p></div>
+      </div>
+    </div>
+    <div class="tile otp rv d1" data-slot="SLOT 02 · OTP · L_Detail
+кроп 5:3 · ≥ 2000×1200">
+      <img src="img/otp-plate.png" alt="Керамическая плита с одноразовым кодом 482 913">
+      <div class="glass"><div class="cap"><span class="sm slash">Одноразовые пароли</span><span class="sm g">OTP</span></div><p class="h4" style="margin-top:.5rem">На брелоках и смартфонах. Работают без интернета</p></div>
+    </div>
+    <div class="tile push rv d2">
+      <div class="cap"><span class="sm slash">Пуш</span><span class="sm g">MFASOFT</span></div>
+      <p class="h4" style="margin-top:.5rem;max-width:12rem">Без ввода кода, биометрия или&nbsp;ПИН</p>
+      <div class="mob"><div class="scr"><div class="nt"><span class="g">Запрос на вход · VPN</span><br>Подтвердите вход для i.petrov<div class="bt"><span>Отклонить</span><span class="ok">Подтвердить</span></div></div></div></div>
+    </div>
+    <div class="tile pin rv d3">
+      <span class="sm g">Без пароля /</span>
+      <p class="num" style="margin-top:auto;font-size:3.5rem">ПИН<br>+OTP</p>
+      <p class="sm g" style="margin-top:.75rem">беспарольный вход</p>
+    </div>
+    <div class="tile chan rv">
+      <span class="sm slash">Каналы доставки</span>
+      <div style="display:flex;gap:.375rem" id="chips">
+        <span class="chip on">Все</span><span class="chip">Пуш</span><span class="chip">Брелок</span><span class="chip">Смартфон</span><span class="chip">SMS</span><span class="chip">E-mail</span><span class="chip">Telegram</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 МУЛЬТИАРЕНДНОСТЬ · ОРБИТЫ ================= -->
+<section class="sec tenancy wrap">
+  <div class="sec-top sm" style="border-color:rgba(44,44,44,.12)"><span class="slash">Мультиарендность</span><span class="g">04 — 10</span></div>
+  <div class="ten">
+    <div class="txt-col">
+      <h2 class="h2 rv">Каждой организации — свой контур на&nbsp;одной инсталляции</h2>
+      <ul class="olist">
+        <li><span>На одной инсталляции — <b>любое количество тенантов</b>, автономных разделов.</span></li>
+        <li><span>В каждом — свои пользователи, аутентификаторы, группы, ресурсы, политики и&nbsp;журналы аудита.</span></li>
+        <li><span>Управление тенантом можно делегировать своей или&nbsp;внешней организации.</span></li>
+        <li><span>Те создают свои тенанты и&nbsp;управляют ими сами — поэтому <b>многоуровневая</b>.</span></li>
+      </ul>
+    </div>
+    <div class="orbit rv d1" data-slot="SLOT 03 · ЯДРО · L_Iso
+~1:1 · прозрачный фон · ≥ 2000×2000
+орбиты и подписи — SVG поверх">
+      <svg class="orb" viewBox="0 0 800 736" preserveAspectRatio="xMidYMid meet">
+        <defs><radialGradient id="g1"><stop offset="0" stop-color="#0CA49F" stop-opacity=".28"/><stop offset="1" stop-color="#0CA49F" stop-opacity="0"/></radialGradient></defs>
+        <ellipse class="glow" cx="400" cy="390" rx="260" ry="150"/>
+        <ellipse cx="400" cy="390" rx="380" ry="150"/>
+        <ellipse class="dash" cx="400" cy="390" rx="300" ry="235" transform="rotate(-14 400 390)"/>
+        <ellipse cx="400" cy="390" rx="330" ry="110" transform="rotate(9 400 390)"/>
+        <path id="o1" d="M20 390a380 150 0 1 0 760 0a380 150 0 1 0 -760 0" fill="none" stroke="none"/>
+        <path id="o2" d="M100 390a300 235 0 1 0 600 0a300 235 0 1 0 -600 0" fill="none" stroke="none" transform="rotate(-14 400 390)"/>
+        <path id="o3" d="M70 390a330 110 0 1 0 660 0a330 110 0 1 0 -660 0" fill="none" stroke="none" transform="rotate(9 400 390)"/>
+        <g class="lbl"><circle r="6" fill="#2C2C2C"/><rect x="12" y="-12" width="104" height="24" rx="12"/><text x="22" y="4">Головной офис</text><animateMotion dur="38s" repeatCount="indefinite"><mpath href="#o1"/></animateMotion></g>
+        <g class="lbl"><circle r="6" fill="#0CA49F"/><rect x="12" y="-12" width="66" height="24" rx="12"/><text x="22" y="4">Филиал</text><animateMotion dur="46s" begin="-20s" repeatCount="indefinite"><mpath href="#o2"/></animateMotion></g>
+        <g class="lbl"><circle r="6" fill="#DCCDB4"/><rect x="12" y="-12" width="86" height="24" rx="12"/><text x="22" y="4">Подрядчик</text><animateMotion dur="32s" begin="-9s" repeatCount="indefinite"><mpath href="#o3"/></animateMotion></g>
+        <g class="lbl"><circle r="6" fill="#fff" stroke="#2C2C2C"/><rect x="12" y="-12" width="140" height="24" rx="12"/><text x="22" y="4">Клиент провайдера</text><animateMotion dur="38s" begin="-19s" repeatCount="indefinite"><mpath href="#o1"/></animateMotion></g>
+        <g class="lbl"><circle r="6" fill="#B3D3D1"/><rect x="12" y="-12" width="132" height="24" rx="12"/><text x="22" y="4">Дочерняя компания</text><animateMotion dur="32s" begin="-25s" repeatCount="indefinite"><mpath href="#o3"/></animateMotion></g>
+      </svg>
+      <div class="core"><img src="img/lattice-iso.png" alt="Решётка из керамических ромбов с графитовым ядром"></div>
+      <div class="count" style="left:2%;top:2%"><b>1</b><span class="sm g">инсталляция</span></div>
+      <div class="count" style="right:2%;top:2%;align-items:flex-end"><b>∞</b><span class="sm g">тенантов</span></div>
+    </div>
+  </div>
+  <div class="benefits">
+    <div class="rv"><span class="sm g">01 /</span><p class="h4">Экономия вычислительных ресурсов</p></div>
+    <div class="rv d1"><span class="sm g">02 /</span><p class="h4">Быстрое подключение подразделений и&nbsp;компаний</p></div>
+    <div class="rv d2"><span class="sm g">03 /</span><p class="h4">Делегирование по&nbsp;принятым политикам</p></div>
+    <div class="rv d3"><span class="sm g">04 /</span><p class="h4">Меньше нагрузки на&nbsp;администраторов головного офиса</p></div>
+  </div>
+</section>
+
+<!-- ================= 05 ГДЕ НУЖЕН SAS ================= -->
+<section class="sec wrap">
+  <div class="sec-top sm"><span class="slash">Где нужен SAS</span><span class="g">05 — 10</span></div>
+  <h2 class="h2 rv" style="max-width:52rem;margin-bottom:3rem">Везде, где сотрудник входит в&nbsp;корпоративную систему</h2>
+  <div class="uses">
+    <a class="card rv" href="#">
+      <div class="pic"><svg class="ill" viewBox="0 0 152 152"><circle class="o" cx="76" cy="76" r="74"/><path class="k" d="M24 76h104"/><path class="s" d="M24 76c20-30 84-30 104 0"/><path class="o" d="M24 76c20 30 84 30 104 0"/><circle class="fk drift" cx="24" cy="76" r="4"/><circle class="ft drift b" cx="76" cy="76" r="7"/><circle class="fs drift c" cx="128" cy="76" r="4"/></svg></div>
+      <div class="body"><h3 class="h3">Удалённый доступ</h3><table><tr><td>защищает:</td><td>VPN, RDP, VDI</td></tr><tr><td>пример:</td><td>сотрудник подключается из&nbsp;дома</td></tr></table></div>
+      <span class="plus">+</span>
+    </a>
+    <a class="card rv d1" href="#">
+      <div class="pic"><svg class="ill" viewBox="0 0 152 152"><circle class="s" cx="76" cy="76" r="74"/><path class="k" d="M44 52h64v42H44zM64 110h24M76 94v16"/><circle class="f drift" cx="76" cy="73" r="9"/><circle class="fk drift b" cx="96" cy="62" r="2.5"/></svg></div>
+      <div class="body"><h3 class="h3">Вход на рабочие места</h3><table><tr><td>защищает:</td><td>Windows, Linux</td></tr><tr><td>пример:</td><td>вход в&nbsp;систему на&nbsp;ПК</td></tr></table></div>
+      <span class="plus">+</span>
+    </a>
+    <a class="card rv" href="#">
+      <div class="pic"><svg class="ill" viewBox="0 0 152 152"><circle class="o" cx="76" cy="76" r="74"/><circle class="k" cx="58" cy="60" r="16"/><circle class="s" cx="94" cy="60" r="16"/><circle class="o" cx="76" cy="92" r="16"/><circle class="ft drift" cx="76" cy="72" r="4"/></svg></div>
+      <div class="body"><h3 class="h3">Бизнес-приложения</h3><table><tr><td>защищает:</td><td>CRM, ERP, совместная работа</td></tr><tr><td>пример:</td><td>Битрикс24, 1С, Outlook Web App</td></tr></table></div>
+      <span class="plus">+</span>
+    </a>
+    <a class="card rv d1" href="#">
+      <div class="pic"><svg class="ill" viewBox="0 0 152 152"><circle class="s" cx="76" cy="76" r="74"/><path class="k" d="M46 50h60M46 76h60M46 102h60"/><circle class="fk drift" cx="56" cy="50" r="4"/><circle class="ft drift b" cx="92" cy="76" r="4"/><circle class="fs drift c" cx="70" cy="102" r="4"/></svg></div>
+      <div class="body"><h3 class="h3">Администрирование</h3><table><tr><td>защищает:</td><td>сеть, серверы Linux, PAM, веб-консоли</td></tr><tr><td>пример:</td><td>доступ админа к&nbsp;vCenter, Zabbix</td></tr></table></div>
+      <span class="plus">+</span>
+    </a>
+  </div>
+</section>
+
+<!-- ================= 06 ИНТЕГРАЦИИ · ДУГА ================= -->
+<section class="sec wrap integr" style="padding-top:0">
+  <div class="sec-top sm"><span class="slash">Интеграции</span><span class="g">06 — 10</span></div>
+  <h2 class="h2 rv" style="max-width:56rem">Встраивается в&nbsp;вашу инфраструктуру, а&nbsp;не&nbsp;наоборот</h2>
+  <div class="arc" id="arc">
+    <div class="halo"></div>
+    <svg viewBox="0 0 1360 576" preserveAspectRatio="none">
+      <path class="rim" d="M60 560 A620 500 0 0 1 1300 560"/>
+      <path class="mer" d="M680 520 C 600 360 250 300 160 380"/>
+      <path class="mer" d="M680 520 C 620 300 420 160 330 190"/>
+      <path class="mer" d="M680 520 C 660 260 600 100 560 85"/>
+      <path class="mer" d="M680 520 C 700 260 760 100 800 85"/>
+      <path class="mer" d="M680 520 C 740 300 940 160 1030 190"/>
+      <path class="mer" d="M680 520 C 760 360 1110 300 1200 380"/>
+      <path class="mer" d="M680 520 C 560 420 200 470 60 560" style="opacity:.5"/>
+      <path class="mer" d="M680 520 C 800 420 1160 470 1300 560" style="opacity:.5"/>
+    </svg>
+    <div class="cat" style="left:11.8%;top:66%" data-k="VPN"><span class="dot">VPN</span></div>
+    <div class="cat" style="left:24.3%;top:33%" data-k="RDP / VDI"><span class="dot">RDP</span></div>
+    <div class="cat" style="left:41.2%;top:14.8%" data-k="LDAP"><span class="dot">LDAP</span></div>
+    <div class="cat" style="left:58.8%;top:14.8%" data-k="Linux"><span class="dot">Linux</span></div>
+    <div class="cat" style="left:75.7%;top:33%" data-k="PAM"><span class="dot">PAM</span></div>
+    <div class="cat" style="left:88.2%;top:66%" data-k="Web"><span class="dot">Web</span></div>
+    <div class="caption glass"><p class="h4" id="capT">Наведите на категорию</p><p class="txt" id="capD">VPN, RDP/VDI, LDAP, Linux, PAM и&nbsp;веб-приложения — с&nbsp;сертификатами совместимости</p></div>
+    <div class="sas">SAS</div>
+  </div>
+  <div class="cert-note"><span class="txt" style="max-width:40rem">Совместимость с&nbsp;отечественными продуктами подтверждаем протоколами испытаний и&nbsp;сертификатами, которые оформляем вместе с&nbsp;разработчиками.</span><a class="pill light" href="#">Все интеграции<span class="ic">→</span></a></div>
+</section>
+
+<!-- ================= 07 СЕРТИФИКАТЫ · КРУГИ ================= -->
+<section class="sec wrap" style="padding-top:0">
+  <div class="sec-top sm"><span class="slash">Сделано в России</span><span class="g">07 — 10</span></div>
+  <div class="certs">
+    <div class="head">
+      <h2 class="h2 rv">Можно применять в&nbsp;ГИС, ИСПДн и&nbsp;на&nbsp;значимых объектах КИИ</h2>
+      <p class="lead rv d1" style="margin-top:1.5rem;max-width:26rem">Сертифицированная версия, реестр российского ПО и&nbsp;зарегистрированная программа для&nbsp;ЭВМ.</p>
+    </div>
+    <div class="venn rv d1">
+      <svg class="ill draw" viewBox="0 0 700 330">
+        <circle pathLength="1" class="dw" cx="140" cy="150" r="130" style="stroke:var(--teal)"/>
+        <circle pathLength="1" class="dw" cx="350" cy="150" r="130" style="stroke:var(--sand)"/>
+        <circle cx="560" cy="150" r="130" style="stroke:var(--ink);stroke-dasharray:3 5"/>
+        <circle cx="140" cy="150" r="96" style="fill:var(--aqua);opacity:.5;stroke:none"/>
+        <line pathLength="1" x1="140" y1="280" x2="140" y2="330" style="stroke:var(--teal)"/>
+        <line pathLength="1" x1="350" y1="280" x2="350" y2="330" style="stroke:var(--sand)"/>
+        <line x1="560" y1="280" x2="560" y2="330" style="stroke:var(--ink);stroke-dasharray:2 4"/>
+        <text x="140" y="140" text-anchor="middle" style="font-size:64px;letter-spacing:-3px">4 УД</text>
+        <text x="140" y="178" text-anchor="middle" style="font-size:15px;fill:#62696A">уровень доверия</text>
+        <text x="350" y="160" text-anchor="middle" style="font-size:34px;letter-spacing:-1px">Реестр ПО</text>
+        <text x="560" y="160" text-anchor="middle" style="font-size:34px;letter-spacing:-1px">ЭВМ</text>
+        <circle class="ft" cx="245" cy="150" r="4"/><circle class="fk" cx="455" cy="150" r="4"/>
+      </svg>
+      <div class="cols">
+        <div><p class="sm g">01 / ФСТЭК России</p><p class="h4" style="margin:.375rem 0">Средство защиты информации</p><p class="txt">Для ГИС, ИСПДн и&nbsp;значимых объектов КИИ.</p></div>
+        <div><p class="sm g">02 / Минцифры</p><p class="h4" style="margin:.375rem 0">Единый реестр ПО</p><p class="txt">Класс — средства защиты от&nbsp;НСД к&nbsp;информации.</p></div>
+        <div><p class="sm g">03 / Роспатент</p><p class="h4" style="margin:.375rem 0">Программа для ЭВМ</p><p class="txt">Официально зарегистрированное отечественное ПО.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 08 КЕЙСЫ · ТЁМНАЯ ================= -->
+<section class="sec cases" id="cases">
+  <div class="kulisa"></div>
+  <div class="wrap">
+    <div class="sec-top sm"><span class="slash" style="color:#fff">Внедрения</span><span class="g">08 — 10</span></div>
+    <div class="head">
+      <h2 class="h2 rv">С&nbsp;2022 года — в&nbsp;коммерческих и&nbsp;государственных организациях по&nbsp;всей России</h2>
+      <div class="ctl"><span class="sm g" id="ccount" style="margin-right:1rem">01 — 05</span><button class="circ" id="prev">←</button><button class="circ" id="next">→</button></div>
+    </div>
+  </div>
+  <div class="track" id="track">
+    <article class="case glass dk"><div class="who sm"><span>Крупная нефтяная компания</span><span>↗</span></div><div class="num">43&nbsp;000</div><p class="cap">пользователей · замена SafeNet Authentication Service</p><ul><li>MFA для удалённого доступа и&nbsp;администрирования</li><li>Интеграция с&nbsp;внутренней системой аудита</li></ul></article>
+    <article class="case glass dk"><div class="who sm"><span>Департамент ИБ федерального региона</span><span>↗</span></div><div class="num">20&nbsp;000</div><p class="cap">пользователей в&nbsp;подведомственных организациях</p><ul><li>Соответствие нормативам и&nbsp;импортозамещению</li><li>Перенос типовых задач на&nbsp;сторону пользователя</li></ul></article>
+    <article class="case glass dk"><div class="who sm"><span>Сеть АЗС</span><span>↗</span></div><div class="num">2<sup>дня</sup></div><p class="cap">пилот · 600 пользователей · беспарольный вход ПИН&nbsp;+&nbsp;OTP</p><ul><li>MFA для VPN (Fortinet)</li><li>Локальное развёртывание</li></ul></article>
+    <article class="case glass dk"><div class="who sm"><span>Крупная розничная сеть</span><span>↗</span></div><div class="num">1&nbsp;600</div><p class="cap">пользователей за&nbsp;2&nbsp;недели · миграция с&nbsp;облака конкурента</p><ul><li>Автоматизация администрирования</li><li>Токены разных видов с&nbsp;детальными политиками</li></ul></article>
+    <article class="case glass dk"><div class="who sm"><span>Геологоразведка нефти и&nbsp;газа</span><span>↗</span></div><div class="num">500</div><p class="cap">пользователей · VPN и&nbsp;VDI, второй фактор — Telegram или&nbsp;SMS</p><ul><li>Синхронизация из&nbsp;MS Active Directory</li><li>Локальное развёртывание</li></ul></article>
+    <div style="flex:none;width:calc(100vw - 32rem)"></div>
+  </div>
+  <div class="waves wrap">
+    <svg viewBox="0 0 1440 200" preserveAspectRatio="none" id="wsvg">
+      <path class="w1" id="w1"/><path class="w2" id="w2"/><path class="w3" id="w3"/>
+    </svg>
+    <div class="pos" id="wpos" style="left:10%"><span>DRAG</span></div>
+  </div>
+</section>
+
+<!-- ================= 09 РАЗВЁРТЫВАНИЕ · СПЛИТ ================= -->
+<section class="sec wrap">
+  <div class="sec-top sm"><span class="slash">Развёртывание и лицензии</span><span class="g">09 — 10</span></div>
+  <div class="split rv">
+    <div class="l">
+      <span class="sm g">Три модели /</span>
+      <h2 class="h2">В&nbsp;своём контуре, в&nbsp;облаке или&nbsp;как собственный сервис</h2>
+      <ul class="tabs" id="tabs">
+        <li class="on" data-i="0"><small>01</small>В своей инфраструктуре<span class="ar">→</span></li>
+        <li data-i="1"><small>02</small>Как сервис из облака<span class="ar">→</span></li>
+        <li data-i="2"><small>03</small>Сервис-провайдерам<span class="ar">→</span></li>
+      </ul>
+      <div class="zones" id="zones"></div>
+    </div>
+    <div class="r" data-slot="SLOT 04–06 · СПЛИТ · G_Detail / L_Low / L_Top
+~7:6 · ≥ 2000×1700 · одна серия
+под стеклянные плашки: лев. верх, прав. низ">
+      <img class="on" src="img/gateway-dock.png" alt="" style="object-position:35% 50%">
+      <img src="img/lattice-low.png" alt="">
+      <img src="img/lattice-top.png" alt="" style="object-position:50% 40%">
+      <div class="glass gA"><span class="sm slash">Поставка</span><p class="h4" style="margin-top:.375rem" id="gA">Набор программных контейнеров</p></div>
+      <div class="glass gB"><span class="sm slash">Модель лицензии</span><p class="h3" style="margin-top:.375rem" id="gB">Срочная или бессрочная</p></div>
+    </div>
+  </div>
+  <div class="lic">
+    <div class="rv"><span class="sm g">Лицензирование /</span><p class="h4">Прозрачно</p></div>
+    <div class="rv d1"><span class="sm g">01 /</span><p class="h4">Единая редакция продукта</p></div>
+    <div class="rv d2"><span class="sm g">02 /</span><p class="h4">Именные лицензии: подписка или&nbsp;бессрочные</p></div>
+    <div class="rv d3"><span class="sm g">03 /</span><p class="h4">Оплата по&nbsp;фактическому использованию</p></div>
+  </div>
+</section>
+
+<!-- ================= 10 FAQ ================= -->
+<section class="sec wrap" style="padding-top:0">
+  <div class="sec-top sm"><span class="slash">Вопросы</span><span class="g">10 — 10</span></div>
+  <div class="faq">
+    <div class="head"><h2 class="h2 rv">Частые вопросы</h2><p class="lead rv d1" style="margin-top:1.25rem">Не нашли ответ — напишите, ответим в&nbsp;течение дня.</p></div>
+    <div class="list rv d1">
+      <details open><summary><span class="sm">01</span>Что такое многофакторная аутентификация?<span class="circ"></span></summary><p class="txt">Вход, при котором к&nbsp;паролю добавляется ещё одно подтверждение личности — пуш в&nbsp;приложении или одноразовый пароль. Учётная запись остаётся защищённой, даже если пароль стал известен злоумышленнику.</p></details>
+      <details><summary><span class="sm">02</span>Какие методы аутентификации поддерживает SAS?<span class="circ"></span></summary><p class="txt">Пуш-уведомления в&nbsp;приложении MFASOFT с&nbsp;биометрией или ПИН-кодом, одноразовые пароли на&nbsp;брелоках и&nbsp;смартфонах, доставка кодов по&nbsp;e-mail, SMS и&nbsp;в&nbsp;мессенджеры.</p></details>
+      <details><summary><span class="sm">03</span>Нужно ли менять систему управления пользователями?<span class="circ"></span></summary><p class="txt">Нет. SAS подключается к&nbsp;вашему каталогу: Active Directory, ALD Pro, РЕД АДМ, FreeIPA, SAMBA и&nbsp;другим.</p></details>
+      <details><summary><span class="sm">04</span>Подходит ли SAS для крупных организаций?<span class="circ"></span></summary><p class="txt">Да. Крупнейшее внедрение — 43&nbsp;000 пользователей в&nbsp;нефтяной компании.</p></details>
+      <details><summary><span class="sm">05</span>Как можно развернуть SAS?<span class="circ"></span></summary><p class="txt">В&nbsp;своей инфраструктуре — продукт поставляется набором контейнеров — или как сервис через облачных провайдеров MFASOFT.</p></details>
+      <details><summary><span class="sm">06</span>Сложно ли внедрить SAS?<span class="circ"></span></summary><p class="txt">Пилот в&nbsp;сети АЗС занял 2&nbsp;дня, 1&nbsp;600 пользователей розничной сети подключили за&nbsp;2&nbsp;недели.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ФОРМА ================= -->
+<section class="form" id="form">
+  <div class="l">
+    <span class="sm slash">Пилот</span>
+    <h2 class="h1">Развернём тестовую версию в&nbsp;вашей сети</h2>
+    <p class="lead">Покажем продукт в&nbsp;действии и&nbsp;ответим на&nbsp;вопросы. Обычно пилот занимает пару дней.</p>
+  </div>
+  <form onsubmit="return false">
+    <div class="field"><label>Имя</label><input placeholder="Иван Петров"></div>
+    <div class="field"><label>Компания</label><input placeholder="ООО «Компания»"></div>
+    <div class="field w"><label>Телефон или e-mail</label><input placeholder="+7 ··· или name@company.ru"></div>
+    <div class="field w"><label>Что защищаем — необязательно</label><textarea rows="2" placeholder="VPN, RDP, 1С…"></textarea></div>
+    <p class="consent"><i></i>Нажимая «Отправить», я&nbsp;соглашаюсь на&nbsp;обработку персональных данных по&nbsp;политике MFASOFT.</p>
+  </form>
+  <a class="round dark" href="#"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="49"/></svg><span class="core"></span><span>Отправить<br>заявку</span></a>
+</section>
+</main>
+
+<!-- ================= ФУТЕР ================= -->
+<footer class="ftr wrap">
+  <div class="cols">
+    <div class="c first"><span class="sm g">MFASOFT /</span><p class="h4" style="max-width:20rem">Российский разработчик продуктов для многофакторной аутентификации</p></div>
+    <div class="c"><span class="sm g">Продукт /</span><a class="dl" href="#">Описание</a><a class="dl" href="#">Лицензирование</a><a class="dl" href="#">Сертифицированная версия</a><a class="dl" href="#">Облако</a></div>
+    <div class="c"><span class="sm g">Компания /</span><a class="dl" href="#">О компании</a><a class="dl" href="#">Партнёры</a><a class="dl" href="#">Медиа</a><a class="dl" href="#">Поддержка</a></div>
+    <div class="c"><span class="sm g">Документы /</span><a class="dl" href="#">Политика данных</a><a class="dl" href="#">Лицензионное соглашение</a></div>
+    <div class="c"><span class="sm g">Контакты /</span><a class="dl" href="tel:+74952280208">+7 495 228-02-08</a><a class="dl" href="mailto:info@mfasoft.ru">info@mfasoft.ru</a><span>Москва, Научный проезд, 17</span></div>
+  </div>
+  <div class="wordmark">MFASOFT</div>
+  <div class="bottom sm g"><span>© 2022–2026 MFASOFT · ООО «СИС разработка»</span><span>Концепт редизайна · не официальный сайт</span></div>
+</footer>
+
+<button class="slot-toggle" type="button" id="slotBtn"><i></i>Слоты 3D</button>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+// шапка
+const hdr=$('#hdr');addEventListener('scroll',()=>hdr.classList.toggle('scrolled',scrollY>40),{passive:true});
+// слоты
+if(new URLSearchParams(location.search).has('slots'))document.body.classList.add('show-slots');
+$('#slotBtn').onclick=()=>document.body.classList.toggle('show-slots');
+// появление
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px'});
+$$('.rv,.draw').forEach(el=>io.observe(el));
+// меню
+const menu=$('#menu');
+$('#menuBtn').onclick=()=>{menu.classList.add('open');menu.setAttribute('aria-hidden','false')};
+$$('[data-close]').forEach(b=>b.onclick=()=>{menu.classList.remove('open');menu.setAttribute('aria-hidden','true')});
+addEventListener('keydown',e=>{if(e.key==='Escape')menu.classList.remove('open')});
+$$('#menuList a').forEach(a=>a.onmouseenter=()=>$('#bignum').textContent=a.dataset.n);
+// чипы-фильтр
+$$('#chips .chip').forEach(c=>c.onclick=()=>{$$('#chips .chip').forEach(x=>x.classList.remove('on'));c.classList.add('on')});
+// интеграции
+const INT={'VPN':'OpenVPN, Check Point, Fortinet, MikroTik, Ideco и другие','RDP / VDI':'Termidesk, Microsoft Remote Desktop Services и другие','LDAP':'ALD Pro, РЕД АДМ, Active Directory, FreeIPA, SAMBA и другие','Linux':'Astra, РЕД ОС, Альт, РОСА, Ubuntu и другие','PAM':'АйТи Бастион, Solar SafeInspect, JumpServer, WebControl sPACE и другие','Web':'Битрикс24, 1С, Outlook Web App, SharePoint, Nextcloud, vCenter, Zabbix'};
+$$('#arc .cat').forEach(c=>c.onmouseenter=()=>{$$('#arc .cat').forEach(x=>x.classList.remove('on'));c.classList.add('on');$('#capT').textContent=c.dataset.k;$('#capD').textContent=INT[c.dataset.k]});
+// развёртывание
+const DEP=[
+ {in:['Модульная архитектура','Открытый стек технологий','Поставка набором контейнеров'],m:'Срочная или бессрочная лицензия',f:['Госсектор','КИИ','Enterprise'],a:'Набор программных контейнеров',b:'Срочная или бессрочная'},
+ {in:['Без своей инсталляции','Свой тенант с политиками','Через облачных провайдеров MFASOFT'],m:'Подписка',f:['Средний бизнес','Филиальные сети'],a:'Облако провайдера MFASOFT',b:'Подписка'},
+ {in:['Тенант на каждого клиента','Делегирование управления','Самообслуживание и аудит'],m:'Оплата по фактическому использованию',f:['Облачные провайдеры','Интеграторы'],a:'MFA как услуга из вашего облака',b:'По факту использования'}];
+function dep(i){const d=DEP[i];$$('#tabs li').forEach((l,k)=>l.classList.toggle('on',k==i));$$('.split .r img').forEach((m,k)=>m.classList.toggle('on',k==i));
+ $('#zones').innerHTML=`<div><span class="sm g">что внутри:</span><ul>${d.in.map(x=>`<li>${x}</li>`).join('')}</ul></div><div><span class="sm g">модель:</span><p class="val">${d.m}</p></div><div class="for"><span class="sm g">для кого:</span><div class="row">${d.f.map(x=>`<span class="chip">${x}<span class="p">+</span></span>`).join('')}</div></div>`;
+ $('#gA').textContent=d.a;$('#gB').textContent=d.b;}
+$$('#tabs li').forEach(l=>l.onclick=()=>dep(+l.dataset.i));dep(0);
+// кейсы: drag-слайдер + волны
+const track=$('#track'),cards=$$('#track .case'),N=cards.length;let idx=0,x0=0,dx=0,down=false;
+const step=()=>cards[1].offsetLeft-cards[0].offsetLeft;
+function go(i){idx=Math.max(0,Math.min(N-1,i));track.style.transform=`translateX(${-idx*step()}px)`;$('#ccount').textContent=`0${idx+1} — 0${N}`;$('#wpos').style.left=(10+idx*(80/(N-1)))+'%'}
+$('#prev').onclick=()=>go(idx-1);$('#next').onclick=()=>go(idx+1);
+track.addEventListener('pointerdown',e=>{down=true;x0=e.clientX;dx=0;track.classList.add('drag');track.setPointerCapture(e.pointerId)});
+track.addEventListener('pointermove',e=>{if(!down)return;dx=e.clientX-x0;track.style.transform=`translateX(${-idx*step()+dx}px)`});
+track.addEventListener('pointerup',()=>{down=false;track.classList.remove('drag');go(idx+(dx<-80?1:dx>80?-1:0))});
+// плывущие синусоиды
+const W=[$('#w1'),$('#w2'),$('#w3')];let t=0;
+function wave(a,f,ph,y){let d='';for(let x=0;x<=1440;x+=12){const yy=y+Math.sin(x*f+ph)*a+Math.sin(x*f*.37+ph*.6)*a*.6;d+=(x?'L':'M')+x+' '+yy.toFixed(1)}return d}
+(function anim(){t+=.006;W[0].setAttribute('d',wave(28,.006,t,100));W[1].setAttribute('d',wave(34,.0048,-t*1.2+2,104));W[2].setAttribute('d',wave(22,.0075,t*.8+4,96));requestAnimationFrame(anim)})();
+</script>
+</body>
+</html>
